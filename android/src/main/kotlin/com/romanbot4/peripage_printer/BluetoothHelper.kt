@@ -42,6 +42,7 @@ class BluetoothHelper(private val appActivity: Activity, private val context: Co
 
     // Commands for printing
     private val cmdPrintStart = byteArrayOf(0x10.toByte(), 0xFF.toByte(), 0xFE.toByte(), 0x01.toByte())
+    private val cmdPrintStart1 = byteArrayOf(0x1D.toByte(),0x56.toByte(),0x66.toByte(),0x00.toByte())
     private val cmdPrintEnd = byteArrayOf(0x1B.toByte(), 0x4A.toByte(), 0x40.toByte(), 0x10.toByte(), 0xFF.toByte(), 0xFE.toByte(), 0x45.toByte())
     private val cmdSetPrintInfo = byteArrayOf(0x1D.toByte(), 0x76.toByte(), 0x30.toByte(), 0x00.toByte(), 0x30.toByte(), 0x00.toByte())
     private var btPerm: Boolean = false
@@ -330,6 +331,7 @@ class BluetoothHelper(private val appActivity: Activity, private val context: Co
             Arrays.fill(line, if (blank) 0.toByte() else 0xFF.toByte())
 
             withContext(Dispatchers.IO) {
+                outputStream?.write(PrintCommand().FEED_LINE)
                 outputStream?.write(cmdPrintStart)
                 outputStream?.write(cmdSetPrintInfo + heightBytes)
 
